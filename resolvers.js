@@ -1,6 +1,6 @@
 const subdomains_retriever = require("./subdomains_retriever");
 
-function check_authentication() {
+function check_authentication(user) {
     if(process.env.IS_ATTACHED === "true") {
         if(!user) {
             throw new Error("Not authenticated");
