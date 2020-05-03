@@ -1,0 +1,24 @@
+{
+  "name": "temenos",
+  "version": "0.0.1",
+  "description": "Teemos is a GraphQL Module that allows remote control of apache2 subdomains",
+  "main": "index.js",
+  "scripts": {
+    "dev": "node main.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/The-School-of-Athens/Temenos.git"
+  },
+  "author": "Tanguy Herbron",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/The-School-of-Athens/Temenos/issues"
+  },
+  "homepage": "https://github.com/The-School-of-Athens/Temenos#readme",
+  "dependencies": {
+    "@graphql-modules/core": "^0.7.15",
+    "apacheconf": "0.0.5",
+    "apollo-server": "^2.12.0"
+  }
+}
