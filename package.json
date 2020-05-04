@@ -1,7 +1,7 @@
 {
   "name": "temenos",
   "version": "0.0.1",
-  "description": "Teemos is a GraphQL Module that allows remote control of apache2 subdomains",
+  "description": "Temenos is a GraphQL Module that allows remote control of apache2 subdomains",
   "main": "index.js",
   "scripts": {
     "dev": "node main.js"
