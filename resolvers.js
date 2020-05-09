@@ -20,7 +20,7 @@ const resolvers = {
         subdomains: (root, args, {user}) => {
             check_authentication(user);
 
-            return subdomains_retriever.get_subdomains()
+            return subdomains_retriever.get_subdomains();
         }
     }
 }
