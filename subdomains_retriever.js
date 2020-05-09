@@ -1,5 +1,4 @@
 const fs = require("fs");
-const apache_directory = "/etc/apache2/sites-available";
 const REFRESH_INTERVAL = 5000; // Set env file
 const apache_conf = require("apacheconf");
 
@@ -10,12 +9,11 @@ function init() {
 }
 
 function update_subdomain_list() {
-    fs.readdir(apache_directory, function(err, items) {
-        subdomains = items;
+    fs.readdir(process.env.APACHE_DIRECTORY, function(err, items) {
         subdomains = [];
 
         for(let index in items) {
-            apache_conf(apache_directory + "/" + items[index], function (err, config, parser) {
+            apache_conf(process.env.APACHE_DIRECTORY + "/" + items[index], function (err, config, parser) {
                 if(err) throw err;
 
                 let subdomain = {"config_file": items[index],
