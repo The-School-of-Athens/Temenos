@@ -18,8 +18,7 @@ function update_subdomain_list() {
             apache_conf(apache_directory + "/" + items[index], function (err, config, parser) {
                 if(err) throw err;
 
-                let subdomain = {"config_file": items[index],
-                                "type": "VHost"};
+                let subdomain = {"config_file": items[index]};
 
                 if(config.VirtualHost) {
                     if(config.VirtualHost[0].ServerName) {
@@ -34,7 +33,17 @@ function update_subdomain_list() {
                         let port = proxy_pass.substring(
                             proxy_pass.lastIndexOf(':') + 1,
                             proxy_pass.lastIndexOf('/'));
+                            
                         subdomain["port"] = parseInt(port);
+                    } else {
+                        subdomain["type"] = "VHost";
+
+                        if(config.VirtualHost[0].Directory) {
+
+                            let directory = config.VirtualHost[0].Directory[0]["$args"];
+
+                            subdomain["directory"] = directory;
+                        }
                     }
                 }
 
