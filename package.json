@@ -4,7 +4,8 @@
   "description": "Temenos is a GraphQL Module that allows remote control of apache2 subdomains",
   "main": "index.js",
   "scripts": {
-    "dev": "node main.js"
+    "dev": "env-cmd -f ./config/dev.env node main.js",
+    "test": "env-cmd -f ./config/test.env jest --runInBand"
   },
   "repository": {
     "type": "git",
@@ -20,5 +21,17 @@
     "@graphql-modules/core": "^0.7.15",
     "apacheconf": "0.0.5",
     "apollo-server": "^2.12.0"
+  },
+  "devDependencies": {
+    "@babel/register": "^7.9.0",
+    "apollo-boost": "^0.4.8",
+    "cross-fetch": "^3.0.4",
+    "env-cmd": "^10.1.0",
+    "graphql": "^15.0.0",
+    "jest": "^26.0.1"
+  },
+  "jest": {
+    "globalSetup": "./tests/globalSetup.js",
+    "globalTeardown": "./tests/globalTeardown.js"
   }
 }
