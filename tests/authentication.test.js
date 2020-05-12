@@ -10,10 +10,12 @@ var client = undefined;
 const ApolloClient = require("apollo-boost").default;
 const { gql } = require("apollo-boost");
 
-const fs = require("fs");
-
-describe("Tests the subdomain queries", () => {
+describe("Tests the subdomain queries permission\n" + 
+        "If the IS_ATTACHED environment variable is set to true, every request should test for authentication (resulting in an error in these context)", () => {
     beforeAll(async(done) => {
+        s_print("info", "Updating environment variables");
+        process.env.IS_ATTACHED = "true";
+
         s_print("loading", "Setting up Apollo Server");
         server = new ApolloServer({
             schema,
@@ -41,57 +43,34 @@ describe("Tests the subdomain queries", () => {
         done();
     });
 
-    it("Requesting all domains should return the number of files in the apache2 directory", async () => {
-        let files = fs.readdirSync(process.env.APACHE_DIRECTORY);
-        
-        const full_query = gql`
+    it("Testing authentication for subdomain", async () => {
+        const subdomain_query = gql`
             {
-                subdomains {
-                    server_name
-                }
-            }
-        `;
-
-        const {data} = await client.query({
-            query: full_query
-        });
-
-        expect(data.subdomains).toHaveLength(files.length);
-    });
-
-    test("A proxy should have a port number and a VHost should have a directory", async () => {
-        const proxy_query = gql`
-            {
-                subdomains {
-                    type,
-                    port
-                }
-            }
-        `
-
-        const {data} = await client.query({
-            query: proxy_query
-        });
-
-        for(let subdomain of data.subdomains) {
-            if(subdomain.type === "Proxy") expect(subdomain.port).not.toBeNull();
-            else expect(subdomain.directory).not.toBeNull();
-        }
-
-    });
-
-    test("Calling the subdomain endpoint without specifying an id should return an error", async () => {
-        const no_id_query = gql`
-            {
-                subdomain {
-                    port
+                subdomain(id: 0) {
+                    config_file
                 }
             }
         `
 
         await expect(client.query({
-            query: no_id_query
-        })).rejects.toThrowError(/status code 400/);
+            query: subdomain_query
+        })).rejects.toThrowError(new Error("GraphQL error: Not authenticated"));
+    });
+
+    it("Testing authentication for subdomains", async () => {
+        const subdomain_query = gql`
+            {
+                subdomains {
+                    config_file
+                }
+            }
+        `
+
+        await expect(client.query({
+            query: subdomain_query
+        })).rejects.toThrowError(new Error("GraphQL error: Not authenticated"));
+
+
     });
 
     afterAll(async(done) => {
@@ -107,5 +86,5 @@ describe("Tests the subdomain queries", () => {
         s_print("info", "Destruction finished, moving on.\n\n");
 
         done();
-    });
-});
+    })
+})
