@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "env-cmd -f ./config/dev.env node main.js",
-    "test": "env-cmd -f ./config/test.env jest --runInBand"
+    "test": "env-cmd -f ./config/test.env jest --runInBand --verbose"
   },
   "repository": {
     "type": "git",
@@ -31,7 +31,9 @@
     "jest": "^26.0.1"
   },
   "jest": {
-    "globalSetup": "./tests/globalSetup.js",
-    "globalTeardown": "./tests/globalTeardown.js"
+    "globalTeardown": "./tests/globalTeardown.js",
+    "setupFiles": [
+      "./tests/print_helper.js"
+    ]
   }
 }
