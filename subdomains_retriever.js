@@ -1,5 +1,4 @@
 const fs = require("fs");
-const REFRESH_INTERVAL = 5000; // Set env file
 const apache_conf = require("apacheconf");
 
 let subdomains = [];
@@ -41,7 +40,7 @@ function update_subdomain_list() {
         }
     });
 
-    setTimeout(update_subdomain_list, REFRESH_INTERVAL);
+    setTimeout(update_subdomain_list, process.env.SUBDOMAIN_REFRESH_INTERVAL);
 }
 
 function get_subdomains() {
